@@ -1,0 +1,17 @@
+# Folders
+/.venv
+/data
+/__pycache__
+
+# Google API token and credentials
+credentials.json
+token.json
+
+# Test data
+prices.csv
+test.py
+working_helper.py
+get_prices.py
+
+# personal info
+details.txt
