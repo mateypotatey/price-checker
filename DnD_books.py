@@ -1,8 +1,6 @@
-import requests, json, os
-import pandas as pd
+import requests, json, os, datetime
 from bs4 import BeautifulSoup
 from helper import email_notification
-import datetime
 
 # scrape the website to get prices for the Garmin Descent Mk2s in black
 URL= "https://www.bookdepository.com/Dungeons-Dragons-Core-Rules-Gift-Set-Wizards-RPG-Team/9780786966622?"
@@ -36,18 +34,19 @@ try:
         stored_price = json.load(f)
 
         for item in stored_price:
-            if stored_price[item] == new_prices[item]:
-                old_price = stored_price[item]
-                email_notification(product_name, "Old Price: SFr. " + str(old_price) ,"New Price: SFr. " + str(product_price), "\nThe price has not changed.")
+            if stored_price[item] != new_prices[item]:
+                email_notification(product_name, "Old Price: SFr. " + str(stored_price[item]) ,"New Price: SFr. " + str(new_prices[item]), "\nThe price has changed.")
                 print(f"Yesterday: \n{item} cost: SFr. {stored_price[item]}\n")
                 print(f"Today: \n{item} cost: SFr. {new_prices[item]}")
-                print("\nThe price has not changed.")
+                print("\nThe price has changed.")
                 print("-" * 50, "\n")
-            
+                with open("data/dnd_books.txt", "w") as file:
+                    file.write(json.dumps(new_prices))
+
             else:
                 print(f"Yesterday: \n{item} cost: SFr. {stored_price[item]}\n")
                 print(f"Today: \n{item} cost: SFr. {new_prices[item]}")
-                print("The price has changed.\n")
+                print("The price has not changed.\n")
                 print("-" * 50, "\n")
 
 except FileNotFoundError:
