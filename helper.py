@@ -45,7 +45,7 @@ def email_notification(*args):
     create_message = {'raw': base64.urlsafe_b64encode(message.as_bytes()).decode()}
 
     try:
-        message = (service.users().messages().send(userId="me", body=create_message).execute())
+        message = (service.users().messages().send(userId="Auto Price Checker", body=create_message).execute())
         print(F'sent message to {message} Message Id: {message["id"]}')
     except HTTPError as error:
         print(F'An error occurred: {error}')
